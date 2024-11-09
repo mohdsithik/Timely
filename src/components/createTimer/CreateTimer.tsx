@@ -23,7 +23,7 @@ export interface TimeInfo {
 
 interface CreateTimerProps {
   onCloseModal: () => void;
-  onPressAdd: (timeInfo: TimeInfo) => void;
+  onPressAdd: (timeInfo: TimeInfo,timerName:string) => void;
 }
 
 const CreateTimer: FC<CreateTimerProps> = ({...props}) => {
@@ -34,7 +34,7 @@ const CreateTimer: FC<CreateTimerProps> = ({...props}) => {
 
   const onHandleAdd = () => {
     if (time) {
-      onPressAdd(time);
+      onPressAdd(time,value);
     }
   };
   return (

@@ -6,7 +6,7 @@ import Dimension from '../../constants/Dimension';
 const styles = StyleSheet.create({
   countDown: {
     ...FontStyles.poppinSB20White,
-    textAlign: 'center',
+   
   },
   timerContainer: {
     backgroundColor: Colors.gray636363,
@@ -20,6 +20,20 @@ const styles = StyleSheet.create({
   bottomIcon: {
     marginHorizontal: Dimension.n(36),
     marginVertical: Dimension.n(16),
+    width:Dimension.n(20),
+    height:Dimension.n(20)
+  },
+  bottomIcon1: {
+    marginHorizontal: Dimension.n(36),
+    marginVertical: Dimension.n(16),
+    width:Dimension.n(25),
+    height:Dimension.n(25)
+  },
+  bottomIcon2: {
+    marginHorizontal: Dimension.n(36),
+    marginVertical: Dimension.n(16),
+    width:Dimension.n(20),
+    height:Dimension.n(22)
   },
   timerHeader: {
     marginHorizontal: Dimension.n(30),

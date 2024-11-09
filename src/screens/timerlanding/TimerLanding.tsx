@@ -1,27 +1,17 @@
 import React, {useState} from 'react';
-import {
-  Button,
-  FlatList,
-  Image,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {FlatList, Image, Text, TouchableOpacity, View} from 'react-native';
 import {RootStackScreenProps} from '../../navigation/Routes';
-import Colors from '../../constants/Colors';
-import Dimension from '../../constants/Dimension';
-import {DeleteImage, Pause, PlusImage, Reset} from '../../assets/images/Images';
+import {PlusImage} from '../../assets/images/Images';
 import CModal from '../../components/cModal/CModal';
 import CreateTimer, {TimeInfo} from '../../components/createTimer/CreateTimer';
 import {Title} from '../../constants/Strings';
-import FontStyles from '../../assets/stylesheet/FontStyles';
 import TimerCard from '../../components/timerCard/TimerCard';
-
+import styles from './Styles';
 export interface TimerDetail {
   timeInfo: TimeInfo;
   status: String;
   title: string;
+  id: number;
 }
 
 const TimerLanding = ({}: RootStackScreenProps<'TimerLanding'>) => {
@@ -38,13 +28,14 @@ const TimerLanding = ({}: RootStackScreenProps<'TimerLanding'>) => {
     setIsVisibleTimerModal(false);
   };
 
-  const onPressAdd = (timeInfo: TimeInfo) => {
+  const onPressAdd = (timeInfo: TimeInfo, timeName: string) => {
     console.log(timeInfo);
 
     const newInfo: TimerDetail = {
       timeInfo: timeInfo,
       status: 'Added',
-      title: '',
+      title: timeName.length > 0 ? timeName : ` Timer ${timerList.length + 1}`,
+      id: timerList.length + 1,
     };
 
     const modifiedList: TimerDetail[] =
@@ -54,8 +45,12 @@ const TimerLanding = ({}: RootStackScreenProps<'TimerLanding'>) => {
     onCloseModal();
   };
 
+  const onHandleDetele = (clickedItem: TimerDetail) => {
+    setTimerList(timerList.filter(timer => timer.id !== clickedItem.id));
+  };
+
   const renderItem = ({item}: {item: TimerDetail}) => {
-    return <TimerCard data={item} />;
+    return <TimerCard data={item} onHandleDelete={onHandleDetele} />;
   };
   return (
     <View style={styles.container}>
@@ -65,7 +60,13 @@ const TimerLanding = ({}: RootStackScreenProps<'TimerLanding'>) => {
         </View>
       ) : (
         <>
-          <FlatList data={timerList} renderItem={renderItem} />
+          {timerList.length > 0 && (
+            <FlatList
+              data={timerList}
+              renderItem={renderItem}
+              ListFooterComponent={<View style={styles.mB100} />}
+            />
+          )}
         </>
       )}
 
@@ -83,68 +84,3 @@ const TimerLanding = ({}: RootStackScreenProps<'TimerLanding'>) => {
 };
 
 export default TimerLanding;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    backgroundColor: Colors.BlackB1B1B,
-  },
-  floatingIcon: {
-    position: 'absolute',
-    width: Dimension.n(70),
-    height: Dimension.n(70),
-    backgroundColor: Colors.WhiteD9D9D9,
-    borderRadius: Dimension.n(50),
-    bottom: Dimension.n(25),
-    right: Dimension.n(25),
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  PlusImage: {
-    width: Dimension.n(35),
-    height: Dimension.n(35),
-  },
-  startText: {
-    textAlign: 'center',
-    ...FontStyles.poppinSB20White,
-  },
-  addButton: {
-    ...FontStyles.poppinM10RWhite,
-    marginHorizontal: Dimension.n(20),
-    marginVertical: Dimension.n(4),
-  },
-  addButtonCon: {
-    backgroundColor: Colors.blue918FFF,
-    borderRadius: Dimension.n(4),
-    alignSelf: 'center',
-  },
-  countDown: {
-    ...FontStyles.poppinSB20White,
-    textAlign: 'center',
-  },
-  timerContainer: {
-    backgroundColor: Colors.gray636363,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-
-    paddingHorizontal: Dimension.n(20),
-    paddingVertical: Dimension.n(12),
-    borderRadius: Dimension.n(8),
-  },
-  bottomIcon: {
-    marginHorizontal: Dimension.n(36),
-    marginVertical: Dimension.n(16),
-  },
-  timerHeader: {
-    marginHorizontal: Dimension.n(30),
-    marginVertical: Dimension.n(16),
-    borderWidth: 1,
-    borderColor: Colors.gray636363,
-    borderRadius: Dimension.n(8),
-  },
-  bottomListIcon: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-});
