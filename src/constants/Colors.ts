@@ -3,7 +3,10 @@ export default {
     BlackB1B1B:'#1B1B1B',
     WhiteD9D9D9:'#D9D9D9',
     gray373737:'#373737',
-    gray595959:'#595959'
+    gray595959:'#595959',
+    white:'#FFFFFF',
+    blue918FFF:'#918FFF',
+    gray636363:'#636363'
 };
 
 // Alpha Value for color code

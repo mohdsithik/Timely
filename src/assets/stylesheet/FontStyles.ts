@@ -7,9 +7,11 @@ export const getFont = (font: string, size: number, color: string) => {
 };
 
 const FontStyles = StyleSheet.create({
+  poppinM10Black: getFont(Fonts.POPPINS_B, 20, Colors.WhiteD9D9D9),
+  poppinM10RWhite: getFont(Fonts.POPPINS_R, 16, Colors.white),
+  poppinR16Gray636363: getFont(Fonts.POPPINS_R, 16, Colors.gray636363),
+  poppinSB20White: getFont(Fonts.POPPINS_SB, 26, Colors.white),
 
-
-  poppinM10Black: getFont(Fonts.POPPINS_B, 30, Colors.WhiteD9D9D9),
 });
 
 export default FontStyles;
