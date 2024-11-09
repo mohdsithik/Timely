@@ -1,4 +1,10 @@
-export default {};
+export default {
+
+    BlackB1B1B:'#1B1B1B',
+    WhiteD9D9D9:'#D9D9D9',
+    gray373737:'#373737',
+    gray595959:'#595959'
+};
 
 // Alpha Value for color code
 // 100% — FF
