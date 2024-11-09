@@ -6,6 +6,7 @@ import Dimension from '../../constants/Dimension';
 import {PlusImage} from '../../assets/images/Images';
 import CModal from '../../components/cModal/CModal';
 import CreateTimer from '../../components/createTimer/CreateTimer';
+import FontStyles from '../../assets/stylesheet/FontStyles';
 
 const TimerLanding = ({}: RootStackScreenProps<'TimerLanding'>) => {
   return (
