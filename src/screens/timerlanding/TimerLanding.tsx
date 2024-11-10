@@ -7,6 +7,7 @@ import CreateTimer, {TimeInfo} from '../../components/createTimer/CreateTimer';
 import {Title} from '../../constants/Strings';
 import TimerCard from '../../components/timerCard/TimerCard';
 import styles from './Styles';
+import CAlertModal from '../../components/cAlertModal/CAlertModal';
 export interface TimerDetail {
   timeInfo: TimeInfo;
   status: String;
@@ -17,11 +18,22 @@ export interface TimerDetail {
 const TimerLanding = ({}: RootStackScreenProps<'TimerLanding'>) => {
   const [visibleTimerModal, setIsVisibleTimerModal] = useState(false);
   const [timerList, setTimerList] = useState<TimerDetail[]>([]);
+  const [isAlertModal, setisAlertModal] = useState(false);
 
-  console.log('timerList', timerList);
+  const onCloseAlertModal = () => {
+    setisAlertModal(false);
+  };
+  const onPressYes = () => {
+    setisAlertModal(false);
+    setIsVisibleTimerModal(true);
+  };
 
   const onPressOpenCircle = () => {
-    setIsVisibleTimerModal(true);
+    if (timerList.length < 5) {
+      setIsVisibleTimerModal(true);
+    } else {
+      setisAlertModal(true);
+    }
   };
 
   const onCloseModal = () => {
@@ -33,8 +45,11 @@ const TimerLanding = ({}: RootStackScreenProps<'TimerLanding'>) => {
 
     const newInfo: TimerDetail = {
       timeInfo: timeInfo,
-      status: 'Added',
-      title: timeName.length > 0 ? timeName : ` Timer ${timerList.length + 1}`,
+      status: Title.ADDED,
+      title:
+        timeName.length > 0
+          ? timeName
+          : ` ${Title.TIMER} ${timerList.length + 1}`,
       id: timerList.length + 1,
     };
 
@@ -52,6 +67,7 @@ const TimerLanding = ({}: RootStackScreenProps<'TimerLanding'>) => {
   const renderItem = ({item}: {item: TimerDetail}) => {
     return <TimerCard data={item} onHandleDelete={onHandleDetele} />;
   };
+  
   return (
     <View style={styles.container}>
       {timerList.length === 0 ? (
@@ -78,6 +94,13 @@ const TimerLanding = ({}: RootStackScreenProps<'TimerLanding'>) => {
 
       <CModal visible={visibleTimerModal} onClose={onCloseModal}>
         <CreateTimer onCloseModal={onCloseModal} onPressAdd={onPressAdd} />
+      </CModal>
+      <CModal visible={isAlertModal} onClose={onCloseAlertModal}>
+        <CAlertModal
+          content={Title.YOU_HAVE_REACHED_THE_MAXIMUM}
+          title={Title.TIMELY}
+          buttons={[{text: Title.YES, onPress: onPressYes}]}
+        />
       </CModal>
     </View>
   );

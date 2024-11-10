@@ -5,6 +5,9 @@ import {TimerDetail} from '../../screens/timerlanding/TimerLanding';
 import styles from './Styles';
 import FontStyles from '../../assets/stylesheet/FontStyles';
 import Dimension from '../../constants/Dimension';
+import CModal from '../cModal/CModal';
+import CAlertModal from '../cAlertModal/CAlertModal';
+import {Title} from '../../constants/Strings';
 
 interface TimerCardProps {
   data: TimerDetail;
@@ -13,6 +16,7 @@ interface TimerCardProps {
 const TimerCard: FC<TimerCardProps> = ({...props}) => {
   const [clickedStart, setIsClickedStart] = useState(false);
   const [pause, setIsPause] = useState(false);
+  const [isAlertModal, setisAlertModal] = useState(false);
   const {data, onHandleDelete} = props;
 
   const {hours, minutes, seconds} = data.timeInfo;
@@ -20,11 +24,17 @@ const TimerCard: FC<TimerCardProps> = ({...props}) => {
     hours * 3600 + minutes * 60 + seconds,
   );
 
+  const onCloseAlertModal = () => {
+    setisAlertModal(false);
+  };
+
   const onPressStart = () => {
     setIsClickedStart(true);
   };
   const onpressReset = () => {
+    setIsPause(false);
     setTimeLeft(hours * 3600 + minutes * 60 + seconds);
+    onCloseAlertModal();
   };
   const onPressPause = () => {
     setIsPause(true);
@@ -37,11 +47,13 @@ const TimerCard: FC<TimerCardProps> = ({...props}) => {
   };
   const onPressDelete = () => {
     onHandleDelete(data);
+    onCloseAlertModal();
   };
 
   useEffect(() => {
     if (clickedStart && !pause) {
       if (timeLeft <= 0) {
+        setisAlertModal(true);
         setIsPause(true);
         return;
       }
@@ -86,7 +98,7 @@ const TimerCard: FC<TimerCardProps> = ({...props}) => {
             <TouchableOpacity
               style={styles.addButtonCon}
               onPress={onPressStart}>
-              <Text style={styles.addButton}>Start</Text>
+              <Text style={styles.addButton}>{Title.START}</Text>
             </TouchableOpacity>
           )}
         </View>
@@ -98,11 +110,11 @@ const TimerCard: FC<TimerCardProps> = ({...props}) => {
             </TouchableOpacity>
             {!pause ? (
               <TouchableOpacity onPress={onPressPause}>
-                <Image source={Pause} style={styles.bottomIcon1} />{' '}
+                <Image source={Pause} style={styles.bottomIcon1} />
               </TouchableOpacity>
             ) : (
               <TouchableOpacity onPress={onPressPlay}>
-                <Image source={Play} style={styles.bottomIcon1} />{' '}
+                <Image source={Play} style={styles.bottomIcon1} />
               </TouchableOpacity>
             )}
 
@@ -112,6 +124,17 @@ const TimerCard: FC<TimerCardProps> = ({...props}) => {
           </View>
         )}
       </View>
+      <CModal visible={isAlertModal} onClose={onCloseAlertModal}>
+        <CAlertModal
+          content={`${data.title} ${Title.FINISHED}`}
+          title={Title.TIMELY}
+          buttons={[
+            {text: Title.RESTART, onPress: onpressReset},
+            {text: Title.DELETE, onPress: onPressDelete},
+            {text: Title.CLOSE, onPress: onCloseAlertModal},
+          ]}
+        />
+      </CModal>
     </View>
   );
 };

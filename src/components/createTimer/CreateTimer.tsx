@@ -1,12 +1,5 @@
 import React, {FC, useState} from 'react';
-import {
-  Image,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {Image, Text, TextInput, TouchableOpacity, View} from 'react-native';
 import Dimension from '../../constants/Dimension';
 import {CloseImage} from '../../assets/images/Images';
 import Colors from '../../constants/Colors';
@@ -14,6 +7,8 @@ import FontStyles from '../../assets/stylesheet/FontStyles';
 import {Title} from '../../constants/Strings';
 import {TimerPicker} from 'react-native-timer-picker';
 import styles from './Styles';
+import CAlertModal from '../cAlertModal/CAlertModal';
+import CModal from '../cModal/CModal';
 
 export interface TimeInfo {
   hours: number;
@@ -23,7 +18,7 @@ export interface TimeInfo {
 
 interface CreateTimerProps {
   onCloseModal: () => void;
-  onPressAdd: (timeInfo: TimeInfo,timerName:string) => void;
+  onPressAdd: (timeInfo: TimeInfo, timerName: string) => void;
 }
 
 const CreateTimer: FC<CreateTimerProps> = ({...props}) => {
@@ -31,19 +26,27 @@ const CreateTimer: FC<CreateTimerProps> = ({...props}) => {
 
   const [value, setValue] = useState('');
   const [time, setTime] = useState<TimeInfo>();
+  const [isAlertModal, setisAlertModal] = useState(false);
 
   const onHandleAdd = () => {
     if (time) {
-      onPressAdd(time,value);
+      if (time.hours === 0 && time.minutes === 0 && time.seconds === 0) {
+        setisAlertModal(true);
+      } else {
+        onPressAdd(time, value);
+      }
     }
+  };
+
+  const onCloseAlertModal = () => {
+    setisAlertModal(false);
   };
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={onCloseModal}>
         <Image source={CloseImage} style={styles.closeImage} />
       </TouchableOpacity>
-      <View
-        style={styles.timerCon}>
+      <View style={styles.timerCon}>
         <TimerPicker
           padWithNItems={1}
           minuteLabel=":"
@@ -66,8 +69,8 @@ const CreateTimer: FC<CreateTimerProps> = ({...props}) => {
             },
           }}
           initialValue={{
-            hours: 2,
-            minutes: 0,
+            hours: 0,
+            minutes: 1,
             seconds: 0,
           }}
           onDurationChange={info => {
@@ -88,9 +91,17 @@ const CreateTimer: FC<CreateTimerProps> = ({...props}) => {
           numberOfLines={1}
         />
         <TouchableOpacity style={styles.addButtonCon} onPress={onHandleAdd}>
-          <Text style={styles.addButton}>Add</Text>
+          <Text style={styles.addButton}>{Title.ADD}</Text>
         </TouchableOpacity>
       </View>
+
+      <CModal visible={isAlertModal} onClose={onCloseAlertModal}>
+        <CAlertModal
+          content={Title.PLEASE_SELECT_VALIDTIME_RANGE}
+          title={Title.TIMELY}
+          buttons={[{text: Title.CLOSE, onPress: onCloseAlertModal}]}
+        />
+      </CModal>
     </View>
   );
 };

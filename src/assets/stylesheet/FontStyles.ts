@@ -11,6 +11,15 @@ const FontStyles = StyleSheet.create({
   poppinM10RWhite: getFont(Fonts.POPPINS_R, 16, Colors.white),
   poppinR16Gray636363: getFont(Fonts.POPPINS_R, 16, Colors.gray636363),
   poppinSB20White: getFont(Fonts.POPPINS_SB, 26, Colors.white),
+  poppinsSB14Blue388DF2: getFont(Fonts.POPPINS_SB, 14, '#388DF2'),
+  poppinsSB18Black: getFont(Fonts.POPPINS_SB, 18, '#333333'),
+  poppinsR14DarkGrey: getFont(Fonts.POPPINS_R, 14, '#757575'),
+  poppinsSB14White: getFont(Fonts.POPPINS_SB, 14, '#ffffff'),
+  poppinsSB14Blue: getFont(Fonts.POPPINS_SB, 14, '#1DADE3'),
+
+
+
+
 
 });
 
